@@ -4,7 +4,7 @@
 import { Lock, User } from 'lucide-react'
 
 //imports react/next
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 //imports zod
@@ -12,6 +12,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import axios from 'axios'
+import { AuthContext } from '../../contexts/auth'
 
 const LoginFormSchema = z.object({
   // criação do schema de validação, mapea os campos do formulário
@@ -50,10 +51,14 @@ function SignIn() {
     mode: 'all',
   })
 
+  //importa as funções de autenticação
+  const { signIn } = useContext(AuthContext);
 
   async function SignInUser(data, e) {
+    setLoading(true)
     e.preventDefault()
-
+    signIn(data.email, data.password)
+    setLoading(false)
   }
 
 
@@ -84,7 +89,7 @@ function SignIn() {
             </div>
             <div className='flex w-full flex-col justify-center items-center'>
               <button onSubmit={e => SignInUser(e)} className='bg-green-600 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-6/12 text-center items-center rounded-lg hover:border-black hover:bg-green-700' >
-                Logar
+              {isLoading ? 'Carregando...' : 'Entrar'}
               </button>
             </div>
             <div className="flex w-full flex-row px-4">

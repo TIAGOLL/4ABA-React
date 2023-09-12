@@ -87,7 +87,7 @@ function AuthProvider({ children }){
           setUser(data);
           storageUser(data);
           setLoadingAuth(false);
-          navigate("/dashboard")
+          navigate("/")
           
         })
 

@@ -4,12 +4,12 @@ import { getFirestore } from 'firebase/firestore'
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDiuu1IgvoPi1ZsHqMLYbVcIyFGizE_NUU",
-  authDomain: "db-tarefa2-4per.firebaseapp.com",
-  projectId: "db-tarefa2-4per",
-  storageBucket: "db-tarefa2-4per.appspot.com",
-  messagingSenderId: "266824206133",
-  appId: "1:266824206133:web:8ccf626268e590119c6e7c"
+  apiKey: "AIzaSyDdUEnKy_QDwIdOByVOiIAS38aS3dYoFwI",
+  authDomain: "avaliacao-1bi-4per.firebaseapp.com",
+  projectId: "avaliacao-1bi-4per",
+  storageBucket: "avaliacao-1bi-4per.appspot.com",
+  messagingSenderId: "965734072471",
+  appId: "1:965734072471:web:82bb5a7a377cf6222b69d2"
 };
 
 
