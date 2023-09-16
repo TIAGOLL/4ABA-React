@@ -1,12 +1,9 @@
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { useState } from 'react'
-import '../../app/globals.css'
 import { ArrowBigLeft } from 'lucide-react'
-import Link from 'next/link'
-
-
+import React from 'react'
+import { useState } from 'react'
 const createUserSchema = z.object({
   name: z.string()
     .nonempty('Preencha este campo')
@@ -29,7 +26,7 @@ const createUserSchema = z.object({
 })
 
 
-const Register = () => {
+const CreatePatient = () => {
 
   // estilos do campos para o código ficar mais clean
   const styleLabel = 'cursor-text absolute left-2 top-1 bottom-0 font-normal text-gray-600 text-lg transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-7 peer-focus:text-t-main peer-focus:text-lg peer-focus:m-0 peer-focus:font-semibold peer-valid:-top-7 peer-valid:text-t-main peer-valid:font-semibold peer-valid:text-lg peer-valid:m-0 peer-read-only:-top-7 peer-read-only:text-t-main peer-read-only:font-semibold peer-read-only:text-lg peer-read-only:m-0'
@@ -67,9 +64,9 @@ const Register = () => {
       <div className='flex flex-wrap items-center bg-background-color justify-center rounded-xl m-14 py-6 space-y-8 shadow-lg shadow-zinc-800 border-3 lg:w-6/12'>
         <div className="flex w-ful flex-row items-center  font-semibold mb-4">
           <div className="flex flex-row justify-start items-start">
-            <Link href='/'>
+            <a href='/'>
               <ArrowBigLeft />
-            </Link>
+            </a>
           </div>
           <div className='flex flex-col items-center justify-center'>
             <h1>Cadastro</h1>
@@ -144,4 +141,4 @@ const Register = () => {
 
 }
 
-export default Register;
+export default CreatePatient;

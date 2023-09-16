@@ -5,16 +5,25 @@ import SignIn from '../pages/SignIn';
 import ConsultsByName from '../pages/consults/[name]';
 import Rpassword from '../pages/rPassword/index.js';
 import Private from './private';
+import Patients from './../pages/Patients/index';
+import CreatePatient from '../pages/Patients/CreatePatient';
+import Calendar from './../pages/Calendar/index';
+import Consults from '../pages/consults';
+import CreateConsult from '../pages/consults/CreateConsult';
 
 function RoutesApp() {
   return (
     <Routes>
       <Route path="/" element={<SignIn />} />
       <Route path='/register' element={<Register />} />
-      <Route path='/rpassword' element={<Rpassword/>} />
+      <Route path='/rpassword' element={<Rpassword />} />
       <Route path="/dashboard" element={<Private><Dashboard /></Private>} />
-      <Route path='/consults/:id' element={<Private><ConsultsByName/></Private>} />
-      <Route path='/consults/create' element={<Private><createConsult/></Private>} />
+      <Route path='/consults' element={<Private><Consults /></Private>} />
+      <Route path='/consults/create' element={<Private><CreateConsult /></Private>} />
+      <Route path='/consults/:id' element={<Private><ConsultsByName /></Private>} />
+      <Route path='/patients' element={<Private><Patients /></Private>}/>
+      <Route path='/patients/create' element={<Private><CreatePatient /></Private>}/>
+      <Route path='/calendar' element={<Private><Calendar/></Private>}/>
       <Route path="*" element={<h1>Not Found 404</h1>} />
     </Routes>
   )

@@ -1,6 +1,6 @@
+import React from 'react';
 
-
-const CardWeekDay = ({ tittle, tasks }: CardTasks) => {
+const CardWeekDay = ({ tittle, tasks }) => {
 
     return (
         <>

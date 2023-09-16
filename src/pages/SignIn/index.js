@@ -11,7 +11,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import axios from 'axios'
+//imports context
 import { AuthContext } from '../../contexts/auth'
 
 const LoginFormSchema = z.object({
@@ -22,9 +22,9 @@ const LoginFormSchema = z.object({
     .toLowerCase(),
 
   password: z.string()
+    .nonempty('Preencha este campo')
     .min(6, 'A senha precisa de no mínimo 6 caracteres')
-    .max(30, 'A senha não pode contém mais que 30 caracteres')
-    .nonempty('Preencha este campo'),
+    .max(30, 'A senha não pode contém mais que 30 caracteres'),
 })
 
 function SignIn() {
@@ -48,7 +48,7 @@ function SignIn() {
     //mode: definição de quando a validação ira ocorrer
     resolver: zodResolver(LoginFormSchema),
     touched: true,
-    mode: 'all',
+    mode: 'onTouched',
   })
 
   //importa as funções de autenticação
@@ -60,8 +60,6 @@ function SignIn() {
     signIn(data.email, data.password)
     setLoading(false)
   }
-
-
 
   return (
     <>
@@ -88,8 +86,8 @@ function SignIn() {
               </div>
             </div>
             <div className='flex w-full flex-col justify-center items-center'>
-              <button onSubmit={e => SignInUser(e)} className='bg-green-600 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-6/12 text-center items-center rounded-lg hover:border-black hover:bg-green-700' >
-              {isLoading ? 'Carregando...' : 'Entrar'}
+              <button type='submit' className='bg-green-600 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-6/12 text-center items-center rounded-lg hover:border-black hover:bg-green-700' >
+                {isLoading ? 'Carregando...' : 'Entrar'}
               </button>
             </div>
             <div className="flex w-full flex-row px-4">

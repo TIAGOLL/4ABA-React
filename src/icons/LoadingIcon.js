@@ -1,7 +1,4 @@
-import { IconsProps } from "@/types/IconsProps";
-
-
-const LoadingIcon = ({ color = 'white', widht = 50, height = widht, strokeWidht = 12 }: IconsProps) => {
+const LoadingIcon = ({ color = 'white', widht = 50, height = widht, strokeWidht = 12 }) => {
     return (
         <svg
             width={widht}

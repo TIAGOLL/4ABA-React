@@ -1,5 +1,5 @@
-import CardWeekDay from '@/components/CardWeekDay';
 import SideBar from '../../components/SideBar';
+import CardWeekDay from '../../components/CardWeekDay';
 
 const Calendar = () => {
 

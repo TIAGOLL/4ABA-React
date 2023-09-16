@@ -5,12 +5,10 @@ import { useNavigate } from "react-router-dom";
 
 const SideBar = () => {
     const navigate = useNavigate()
-
     function desconnectUser() {
         localStorage.removeItem('@ticketsPRO');
         navigate('/')
     }
-
     return (
         <>
             <div className="h-screen w-2/12 flex flex-col">
@@ -22,9 +20,9 @@ const SideBar = () => {
                         </div>
                         <div className="flex flex-col space-y-2">
                             <ActiveLink href='/dashboard' ><HomeIcon />Home</ActiveLink>
-                            <ActiveLink href='/patients' ><Users />Pacientes</ActiveLink>
-                            <ActiveLink href='/calendar' ><CalendarDays />Calendario</ActiveLink>
-                            <ActiveLink href='/consults' ><GanttChartSquareIcon />Consultas</ActiveLink>
+                            <ActiveLink href='/patients'><Users />Pacientes</ActiveLink>
+                            <ActiveLink href='/calendar'><CalendarDays />Calendario</ActiveLink>
+                            <ActiveLink href='/consults'><GanttChartSquareIcon />Consultas</ActiveLink>
                             <div className="flex flex-col absolute bottom-2">
                                 <button onClick={(e) => desconnectUser(e)} className="flex gap-7 font-semibold bg-background-color py-4 pl-6 rounded-l-3xl shadow-black"><Power />Desconectar</button>
                             </div>

@@ -14,7 +14,6 @@ const ConsultsByName = (props) => {
 
   const [id, setId] = useState(consults.id)
   const [nomePaciente, setNomePaciente] = useState(consults.tittle)
-  const [date, setDate] = useState(consults.date)
   const [content, setContent] = useState(consults.content)
   const [local, setLocal] = useState(consults.local)
 
