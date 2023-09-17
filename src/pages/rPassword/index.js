@@ -40,7 +40,7 @@ const Rpassword = () => {
     <>
       <div className="flex h-screen justify-center items-center bg-zinc-500">
         <div className='flex flex-col items-center bg-background-color w-4/12 justify-center rounded-xl py-6 space-y-8 shadow-lg shadow-zinc-800 border-3'>
-          <div href={'/'} className='relative top-20 left-14 flex items-start justify-start w-full' >
+          <div className='relative top-20 left-14 flex items-start justify-start w-full' >
             <a href={'/'}>
               <ArrowBigLeft width={30} height={30} />
             </a>

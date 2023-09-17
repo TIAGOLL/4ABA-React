@@ -1,5 +1,3 @@
-import { InputHTMLAttributes } from 'react';
-
 
 const FloatInput = (props) => {
 

@@ -2,20 +2,21 @@ import ConsultsCard from '../../components/ConsultsCard';
 import IfLoading from '../../components/IfLoaging';
 import SideBar from '../../components/SideBar';
 import { Suspense, useEffect, useState } from 'react';
-import { collection, getDocs, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../services/connectionDB';
 
 const Consults = () => {
 
-  const [consults, setData] = useState([]);
+  const [data, setData] = useState([]);
 
   async function loadConsults() {
     onSnapshot(collection(db, "consults"), (querySnapshot) => {
       const consults = [];
       querySnapshot.forEach((doc) => {
-        consults.push({ ...doc.data() });
+        consults.push({ ...doc.data(), id: doc.id});
       });
       setData(consults)
+      console.log(consults)
       console.log('Consultas carregadas');
     })
   }
@@ -38,8 +39,8 @@ const Consults = () => {
             <div className='flex flex-wrap w-full gap-4'>
               <Suspense fallback={<IfLoading />}>
                 {
-                  consults.map(({ id, local, date, createdAt, namePatient, nameProfessional, description }) => (
-                    <ConsultsCard key={id} date={date} namePatient={namePatient} nameProfessional={nameProfessional} description={description} local={local} />
+                  data.map(({ id, local, date, createdAt, namePatient, nameProfessional, description }) => (
+                    <ConsultsCard key={id} id={id} date={date} namePatient={namePatient} nameProfessional={nameProfessional} description={description} local={local} />
                     ))
                 }
               </Suspense>
