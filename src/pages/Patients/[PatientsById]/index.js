@@ -112,7 +112,7 @@ const PatientsById = () => {
   }, []);
 
 
-  async function updatePatient(e, idPatient) {
+  async function updatePatient(e) {
     setLoading(true)
     e.preventDefault()
     setLoading(true)
@@ -126,22 +126,24 @@ const PatientsById = () => {
       rCpf: rCpf,
       rPhone: rPhone,
     }
-    await updateDoc(collection(db, "patients", idPatient), patient)
+    await updateDoc(doc(db, "patients", id), patient)
     setLoading(false)
+    setOutput(<span className='font-semibold text-green-600 pt-4'>Paciente atualizado com sucesso!</span>)
+    setTimeout(() => {
+      setOutput(undefined)
+    }, 3000);
   }
 
-  async function deletePatient(e, idPatient) {
+  async function deletePatient(e) {
     setLoading(true)
     e.preventDefault()
     setLoading(true)
-    await deleteDoc(collection(db, "patients", idPatient))
+    await deleteDoc(doc(db, "patients", id))
     setLoading(false)
+    setOutput(<span className='font-semibold text-red-600 pt-4'>Paciente excluído com sucesso!</span>)
     setTimeout(() => {
       setOutput(undefined)
     }, 2000);
-    setTimeout(() => {
-      navigate('/patients')
-    }, 3000);
   }
 
 
@@ -210,10 +212,10 @@ const PatientsById = () => {
                   }
                 </div>
                 <div className='flex w-full flex-row gap-4 justify-center items-center'>
-                  <button onSubmit={e => updatePatient(idPatient, e)} className='bg-green-600 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-4/12 text-center items-center rounded-lg hover:border-black hover:bg-green-700' >
+                  <button onClick={e => updatePatient(e)} className='bg-green-600 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-4/12 text-center items-center rounded-lg hover:border-black hover:bg-green-700' >
                     {loading ? <IfLoading /> : <span>Salvar</span>}
                   </button>
-                  <button onSubmit={e => deletePatient(idPatient, e)} className='bg-red-500 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-4/12 text-center items-center rounded-lg hover:border-black hover:bg-red-700' >
+                  <button onClick={e => deletePatient(e)} className='bg-red-500 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-4/12 text-center items-center rounded-lg hover:border-black hover:bg-red-700' >
                     {loading ? <IfLoading /> : <span>Excluir</span>}
                   </button>
                 </div>
