@@ -4,10 +4,11 @@ import { useForm } from 'react-hook-form'
 import { ArrowBigLeft } from 'lucide-react'
 import React, { useEffect } from 'react'
 import { useState } from 'react'
-import { addDoc, collection, deleteDoc, onSnapshot, updateDoc } from 'firebase/firestore'
+import { collection, deleteDoc, doc, onSnapshot, updateDoc } from 'firebase/firestore'
 import { db } from '../../../services/connectionDB'
 import IfLoading from '../../../components/IfLoaging'
 import { useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const createUserSchema = z.object({
   namePatient: z.string()
@@ -60,7 +61,7 @@ const PatientsById = () => {
 
 
   const { id } = useParams();
-
+  const navigate = useNavigate();
   //hooks para os inputs do paciente
   const [idPatient, setIdPatient] = useState('')
   const [name, setName] = useState('')
@@ -74,7 +75,7 @@ const PatientsById = () => {
   const [rCpf, setrCpf] = useState('')
   const [rPhone, setrPhone] = useState('')
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [onfocus, setOnFocus] = useState(false)
   const [onfocus1, setOnFocus1] = useState(false)
   const [output, setOutput] = useState('')
@@ -106,31 +107,70 @@ const PatientsById = () => {
 
   useEffect(() => {
     loadPatient();
-    setLoading(false);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   }, []);
 
 
-  async function updatePatient(idPatient, e) {
-    e.preventDefault()
+  async function updatePatient(e, idPatient) {
     setLoading(true)
-    const patient = {
-      name: name,
-      dateOfBirth: dateOfBirth,
-      cpf: cpf,
-      adress: adress,
-      rName: rName,
-      rDateOfBirth: rDateOfBirth,
-      rCpf: rCpf,
-      rPhone: rPhone,
-    }
-    await updateDoc(collection(db, "patients", idPatient), patient)
-    setLoading(false)
+    e.preventDefault()
+
+    await updateDoc(doc(db, "patients", idPatient),
+      {
+        name: name,
+        dateOfBirth: dateOfBirth,
+        cpf: cpf,
+        adress: adress,
+        rName: rName,
+        rCpf: rCpf,
+        rPhone: rPhone,
+        rDateOfBirth: rDateOfBirth
+      }
+    )
+      .then(() => {
+        setOutput(<div className='flex w-full justify-center items-center'><span className='flex w-full justify-start py-1 font-semibold text-green-600'>Paciente atualizado com sucesso!</span></div>)
+        setTimeout(() => {
+          setOutput('')
+        }, 3000)
+      })
+      .catch((error) => {
+        setOutput(<div div className='flex w-full justify-center items-center' ><span className='flex w-full justify-start py-1 font-semibold text-red-600'>Erro ao atualizar paciente!</span></div >)
+        setTimeout(() => {
+          setOutput('')
+        }, 3000)
+      })
+      .finally(() => {
+        setTimeout(() => {
+          navigate('/patients')
+        }, 3000);
+        setLoading(false)
+      })
+
   }
 
-  async function deletePatient(idPatient, e) {
-    e.preventDefault()
+  async function deletePatient(e, idPatient) {
     setLoading(true)
-    await deleteDoc(collection(db, "patients", idPatient))
+    e.preventDefault()
+    await deleteDoc(doc(db, "patients", idPatient))
+      .then(() => {
+        setOutput(<div className='flex w-full justify-center items-center'><span className='flex w-full justify-start py-1 font-semibold text-red-600'>Paciente excluído com sucesso!</span></div>)
+        setTimeout(() => {
+          setOutput('')
+        }, 3000)
+      })
+      .catch((error) => {
+        setOutput(<div div className='flex w-full justify-center items-center' ><span className='flex w-full justify-start py-1 font-semibold text-red-600'>Erro ao excluir paciente!</span></div >)
+        setTimeout(() => {
+          setOutput('')
+        }, 3000)
+      })
+      .finally(() => {
+        setTimeout(() => {
+          navigate('/patients')
+        }, 3000);
+      })
     setLoading(false)
   }
 
@@ -151,22 +191,22 @@ const PatientsById = () => {
             </div>
             <div className='flex w-ful flex-wrap px-14 justify-start items-center gap-8'>
               <div className='flex relative w-full items-center justify-center flex-col'>
-                <input required {...register('namePatient')} onChange={(e) => setName(e.target.value)} value={name} type="text" id='name' className={styleInput} />
+                <input required {...register('namePatient')} onChange={(e) => setName(e.target.value)} value={loading ? 'Carregando...' : name} type="text" id='name' className={styleInput} />
                 <label htmlFor="name" className={styleLabel}>Nome</label>
                 {errors.namePatient && <span className='flex w-full justify-start py-1 font-semibold text-red-600'>{errors.namePatient.message}</span>}
               </div>
               <div className='flex relative w-full items-center justify-center flex-col'>
-                <input required {...register('dateOfBirth')} onChange={(e) => setDateOfBirth(e.target.value)} type="date" value={dateOfBirth} id='dateofbirth' onFocus={() => setOnFocus(true)} onBlur={() => setOnFocus(false)} className={styleInput} />
+                <input required {...register('dateOfBirth')} onChange={(e) => setDateOfBirth(e.target.value)} type="date" value={loading ? 'Carregando...' : dateOfBirth} id='dateofbirth' onFocus={() => setOnFocus(true)} onBlur={() => setOnFocus(false)} className={styleInput} />
                 <label htmlFor="dateofbirth" className={styleLabel}>{onfocus ? 'Data de nascimento' : ''}</label>
                 {errors.dateOfBirth && <span className='flex w-full justify-start py-1 font-semibold text-red-600'>{errors.dateOfBirth.message}</span>}
               </div>
               <div className='flex relative w-full items-center justify-center flex-col'>
-                <input required {...register('cpf')} onChange={(e) => setCpf(e.target.value)} type="text" value={cpf} id='cpf' className={styleInput} />
+                <input required {...register('cpf')} onChange={(e) => setCpf(e.target.value)} type="text" value={loading ? 'Carregando...' : cpf} id='cpf' className={styleInput} />
                 <label htmlFor="cpf" className={styleLabel}>CPF</label>
                 {errors.cpf && <span className='flex w-full justify-start py-1 font-semibold text-red-600'>{errors.cpf.message}</span>}
               </div>
               <div className='flex relative w-full items-center justify-center flex-col'>
-                <input required {...register('adress')} onChange={(e) => setAdress(e.target.value)} type="text" value={adress} id='adress' className={styleInput} />
+                <input required {...register('adress')} onChange={(e) => setAdress(e.target.value)} type="text" value={loading ? 'Carregando...' : adress} id='adress' className={styleInput} />
                 <label htmlFor="adress" className={styleLabel}>Endereço</label>
                 {errors.adress && <span className='flex w-full justify-start py-1 font-semibold text-red-600'>{errors.adress.message}</span>}
               </div>
@@ -177,22 +217,22 @@ const PatientsById = () => {
               </div>
               <div className='flex w-ful flex-wrap px-14 justify-start items-center gap-8'>
                 <div className='flex relative w-full items-center justify-center flex-col'>
-                  <input required {...register('rName')} value={rName} onChange={(e) => setrName(e.target.value)} type="text" id='rname' className={styleInput} />
+                  <input required {...register('rName')} value={loading ? 'Carregando...' : rName} onChange={(e) => setrName(e.target.value)} type="text" id='rname' className={styleInput} />
                   <label htmlFor="rname" className={styleLabel}>Nome</label>
                   {errors.rName && <span className='flex w-full justify-start py-1 font-semibold text-red-600'>{errors.rName.message}</span>}
                 </div>
                 <div className='flex relative w-full items-center justify-center flex-col'>
-                  <input required {...register('rDateOfBirth')} value={rDateOfBirth} onChange={(e) => setrDateOfBirth(e.target.value)} type="date" id='rdateofbirth' className={styleInput} onFocus={() => setOnFocus1(true)} onBlur={() => setOnFocus1(false)} />
+                  <input required {...register('rDateOfBirth')} value={loading ? 'Carregando...' : rDateOfBirth} onChange={(e) => setrDateOfBirth(e.target.value)} type="date" id='rdateofbirth' className={styleInput} onFocus={() => setOnFocus1(true)} onBlur={() => setOnFocus1(false)} />
                   <label htmlFor="rdateofbirth" className={styleLabel}>{onfocus1 ? 'Data de nascimento' : ''}</label>
                   {errors.rDateOfBirth && <span className='flex w-full justify-start py-1 font-semibold text-red-600'>{errors.rDateOfBirth.message}</span>}
                 </div>
                 <div className='flex relative w-full items-center justify-center flex-col'>
-                  <input required {...register('rCpf')} value={rCpf} onChange={(e) => setrCpf(e.target.value)} type="text" id='rcpf' className={styleInput} />
+                  <input required {...register('rCpf')} value={loading ? 'Carregando...' : rCpf} onChange={(e) => setrCpf(e.target.value)} type="text" id='rcpf' className={styleInput} />
                   <label htmlFor="rcpf" className={styleLabel}>CPF</label>
                   {errors.rCpf && <span className='flex w-full justify-start py-1 font-semibold text-red-600'>{errors.rCpf.message}</span>}
                 </div>
                 <div className='flex relative w-full items-center justify-center flex-col'>
-                  <input required {...register('rPhone')} value={rPhone} onChange={(e) => setrPhone(e.target.value)} type="text" id='rPhone' className={styleInput} />
+                  <input required {...register('rPhone')} value={loading ? 'Carregando...' : rPhone} onChange={(e) => setrPhone(e.target.value)} type="text" id='rPhone' className={styleInput} />
                   <label htmlFor="rPhone" className={styleLabel}>Telefone</label>
                   {errors.rPhone && <span className='flex w-full justify-start py-1 font-semibold text-red-600'>{errors.rPhone.message}</span>}
                 </div>
@@ -200,10 +240,10 @@ const PatientsById = () => {
                   output && output
                 }
                 <div className='flex w-full flex-row gap-4 justify-center items-center'>
-                  <button onSubmit={e => updatePatient(idPatient, e)} className='bg-green-600 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-4/12 text-center items-center rounded-lg hover:border-black hover:bg-green-700' >
+                  <button onClick={e => updatePatient(e, idPatient)} className='bg-green-600 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-4/12 text-center items-center rounded-lg hover:border-black hover:bg-green-700' >
                     {loading ? <IfLoading /> : <span>Salvar</span>}
                   </button>
-                  <button onSubmit={e => deletePatient(idPatient, e)} className='bg-red-500 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-4/12 text-center items-center rounded-lg hover:border-black hover:bg-red-700' >
+                  <button onClick={e => deletePatient(e, idPatient)} className='bg-red-500 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-4/12 text-center items-center rounded-lg hover:border-black hover:bg-red-700' >
                     {loading ? <IfLoading /> : <span>Excluir</span>}
                   </button>
                 </div>
