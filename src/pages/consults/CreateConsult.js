@@ -155,7 +155,7 @@ function CreateConsult() {
                   <input required {...register('date')} onChange={e => setDate(e.target.value)} value={date} id='date' className={styleInput} type='date' placeholder={false} onFocus={() => setOnFocus(true)} onBlur={() => setOnFocus(false)} />
                   <label htmlFor='date' className={styleLabel}>{onfocus ? 'Data' : ''}</label>
                 </div>
-                {errors.date &&<span className='flex pl-10 py-1 font-semibold text-red-600'>{errors.date.message}</span>}
+                {errors.date && <span className='flex pl-10 py-1 font-semibold text-red-600'>{errors.date.message}</span>}
               </div>
               <div className='flex flex-col w-full'>
                 <div className='flex relative w-full space-x-2 items-center justify-center'>

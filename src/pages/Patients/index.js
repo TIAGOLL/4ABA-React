@@ -33,7 +33,7 @@ const Patients = () => {
               Cadastrar paciente
             </a>
           </div>
-          <div className='flex items-center w-full justify-start h-[calc(90vh-120px)] overflow-y-auto'>
+          <div className='flex w-full justify-start overflow-y-auto'>
             <div className='flex flex-wrap w-full gap-4'>
               {
                 loading ? <h1>Carregando...</h1> :
