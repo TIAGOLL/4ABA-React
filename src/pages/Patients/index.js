@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import SideBar from '../../components/SideBar';
-import { collection, getDoc, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../services/connectionDB';
 import PatientCard from '../../components/PatientCard';
 

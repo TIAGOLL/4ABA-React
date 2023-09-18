@@ -12,6 +12,8 @@ import Consults from '../pages/consults';
 import CreateConsult from '../pages/consults/CreateConsult';
 import PatientsById from '../pages/Patients/[PatientsById]';
 
+//Rotas
+
 function RoutesApp() {
   return (
     <Routes>

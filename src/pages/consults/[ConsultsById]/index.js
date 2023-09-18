@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { collection, deleteDoc, onSnapshot, updateDoc } from 'firebase/firestore';
+import { collection, deleteDoc, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '../../../services/connectionDB';
 import { useParams } from 'react-router-dom';
 import { ArrowBigLeft } from 'lucide-react';
@@ -11,6 +11,7 @@ import { User } from 'lucide-react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from 'react-router-dom';
 
 
 const LoginFormSchema = z.object({
@@ -49,7 +50,7 @@ const ConsultsById = () => {
   const styleInput = 'pl-4 rounded-xl peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-500'
 
   //validação de formulário
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, formState: { errors } } = useForm({
     //register: registra os campos do formulário
     //handleSubmit: acionada quando aperto o botão de login
     //formState: retorna o estado do formulário
@@ -61,29 +62,29 @@ const ConsultsById = () => {
   })
 
   const { id } = useParams();
+  const navigate = useNavigate();
 
+  const [output, setOutput] = useState();
   const [onfocus, setOnFocus] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
   const [local, setLocal] = useState();
   const [date, setDate] = useState();
   const [namePatient, setNamePatient] = useState();
   const [nameProfessional, setNameProfessional] = useState();
   const [description, setDescription] = useState();
   const [createdAt, setCreatedAt] = useState();
-  const [idConsult, setIdConsult] = useState();
 
   async function loadConsult() {
     onSnapshot(collection(db, "consults"), (querySnapshot) => {
       querySnapshot.forEach((doc) => {
         if (doc.id === id) {
-          setIdConsult(doc.id)
           setDate(doc.data().date)
           setLocal(doc.data().local)
           setNamePatient(doc.data().namePatient)
           setNameProfessional(doc.data().nameProfessional)
           setDescription(doc.data().description)
-          setCreatedAt(doc.data().createdAt.toDate().toLocaleDateString('pt-BR'))
+          setCreatedAt(doc.data().createdAt)
+          //.toDate().toLocaleDateString('pt-BR')
         }
       });
     })
@@ -95,10 +96,10 @@ const ConsultsById = () => {
   }, []);
 
 
-  async function updateConsult(e, id) {
+  async function updateConsult(e) {
     e.preventDefault();
     setLoading(true)
-    await updateDoc(collection(db, "consults", id), {
+    await updateDoc(doc(db, "consults", id), {
       local: local,
       date: date,
       namePatient: namePatient,
@@ -109,15 +110,24 @@ const ConsultsById = () => {
     })
     loadConsult();
     setLoading(false)
+    setOutput(<span className='font-semibold text-green-600'>Consulta atualizada com sucesso!</span>)
+    setTimeout(() => {
+      setOutput(undefined)
+    }, 3000);
   }
 
 
-  async function deleteConsult(e, id) {
+  async function deleteConsult(e) {
     e.preventDefault();
     setLoading(true)
-    await deleteDoc(collection(db, "consults", id))
+    await deleteDoc(doc(db, "consults", id))
     loadConsult();
     setLoading(false)
+    setOutput(<span className='font-semibold text-red-600'>Consulta deletada com sucesso!</span>)
+    setTimeout(() => {
+      setOutput(undefined)
+    }, 3000);
+    navigate('/consults')
   }
 
 
@@ -175,12 +185,15 @@ const ConsultsById = () => {
                 </div>
                 {errors.description && <span className='flex pl-10 py-1 font-semibold text-red-600'>{errors.description.message}</span>}
               </div>
+              {
+                output && output
+              }
             </div>
             <div className='flex w-full flex-row gap-4 justify-center items-center'>
-              <button onSubmit={(e) => updateConsult(e, id)} className='bg-green-600 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-4/12 text-center items-center rounded-lg hover:border-black hover:bg-green-700' >
+              <button onClick={(e) => updateConsult(e)} className='bg-green-600 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-4/12 text-center items-center rounded-lg hover:border-black hover:bg-green-700' >
                 {loading ? <IfLoading /> : <span>Salvar</span>}
               </button>
-              <button onSubmit={(e) => deleteConsult(e, id)} className='bg-red-500 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-4/12 text-center items-center rounded-lg hover:border-black hover:bg-red-700' >
+              <button onClick={(e) => deleteConsult(e)} className='bg-red-500 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-4/12 text-center items-center rounded-lg hover:border-black hover:bg-red-700' >
                 {loading ? <IfLoading /> : <span>Excluir</span>}
               </button>
             </div>

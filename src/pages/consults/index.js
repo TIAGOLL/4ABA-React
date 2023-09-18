@@ -1,5 +1,4 @@
 import ConsultsCard from '../../components/ConsultsCard';
-import IfLoading from '../../components/IfLoaging';
 import SideBar from '../../components/SideBar';
 import { useEffect, useState } from 'react';
 import { collection, onSnapshot } from 'firebase/firestore';

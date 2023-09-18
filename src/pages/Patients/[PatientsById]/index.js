@@ -4,10 +4,11 @@ import { useForm } from 'react-hook-form'
 import { ArrowBigLeft } from 'lucide-react'
 import React, { useEffect } from 'react'
 import { useState } from 'react'
-import { addDoc, collection, deleteDoc, onSnapshot, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, onSnapshot, updateDoc } from 'firebase/firestore'
 import { db } from '../../../services/connectionDB'
 import IfLoading from '../../../components/IfLoaging'
 import { useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const createUserSchema = z.object({
   namePatient: z.string()
@@ -60,6 +61,7 @@ const PatientsById = () => {
 
 
   const { id } = useParams();
+  const navigate = useNavigate();
 
   //hooks para os inputs do paciente
   const [idPatient, setIdPatient] = useState('')
@@ -123,15 +125,28 @@ const PatientsById = () => {
       rCpf: rCpf,
       rPhone: rPhone,
     }
-    await updateDoc(collection(db, "patients", idPatient), patient)
+    await updateDoc(doc(db, "patients", idPatient), patient)
+    setOutput(<span className='font-semibold text-green-600'>Paciente atualizado com sucesso!</span>)
     setLoading(false)
+    setTimeout(() => {
+      setOutput(undefined)
+      navigate('/patients/')
+    }, 2000);
+
   }
 
   async function deletePatient(idPatient, e) {
     e.preventDefault()
     setLoading(true)
-    await deleteDoc(collection(db, "patients", idPatient))
+    await deleteDoc(doc(db, "patients", idPatient))
+    setOutput(<span className='font-semibold text-red-600'>Paciente deletado com sucesso!</span>)
     setLoading(false)
+    setTimeout(() => {
+      setOutput(undefined)
+    }, 2000);
+    setTimeout(() => {
+      navigate('/patients')
+    }, 3000);
   }
 
 
@@ -195,15 +210,15 @@ const PatientsById = () => {
                   <input required {...register('rPhone')} value={rPhone} onChange={(e) => setrPhone(e.target.value)} type="text" id='rPhone' className={styleInput} />
                   <label htmlFor="rPhone" className={styleLabel}>Telefone</label>
                   {errors.rPhone && <span className='flex w-full justify-start py-1 font-semibold text-red-600'>{errors.rPhone.message}</span>}
+                  {
+                    output && output
+                  }
                 </div>
-                {
-                  output && output
-                }
                 <div className='flex w-full flex-row gap-4 justify-center items-center'>
-                  <button onSubmit={e => updatePatient(idPatient, e)} className='bg-green-600 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-4/12 text-center items-center rounded-lg hover:border-black hover:bg-green-700' >
+                  <button onClick={e => updatePatient(idPatient, e)} className='bg-green-600 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-4/12 text-center items-center rounded-lg hover:border-black hover:bg-green-700' >
                     {loading ? <IfLoading /> : <span>Salvar</span>}
                   </button>
-                  <button onSubmit={e => deletePatient(idPatient, e)} className='bg-red-500 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-4/12 text-center items-center rounded-lg hover:border-black hover:bg-red-700' >
+                  <button onClick={e => deletePatient(idPatient, e)} className='bg-red-500 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-4/12 text-center items-center rounded-lg hover:border-black hover:bg-red-700' >
                     {loading ? <IfLoading /> : <span>Excluir</span>}
                   </button>
                 </div>
