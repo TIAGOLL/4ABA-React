@@ -1,21 +1,19 @@
 //imports icones 
-import { ArrowBigLeft, User, PenLine } from 'lucide-react'
+import { ArrowBigLeft, PenLine, User } from 'lucide-react'
 
 //imports react/next
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 //imports zod
-import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 
 //imports context de autenticação
 import { addDoc, collection } from 'firebase/firestore'
-import { db } from '../../services/connectionDB'
-import LoadingIcon from '../../icons/LoadingIcon'
+import { CalendarDays, MapPin } from 'lucide-react'
 import IfLoading from '../../components/IfLoaging'
-import { MapPin } from 'lucide-react'
-import { CalendarDays } from 'lucide-react'
+import { db } from '../../services/connectionDB'
 
 const LoginFormSchema = z.object({
   // criação do schema de validação, mapea os campos do formulário
@@ -47,10 +45,10 @@ const LoginFormSchema = z.object({
 function CreateConsult() {
   // estilos do campos para o código ficar mais clean
   const styleLabel = 'cursor-text absolute left-10 top-1 bottom-0 font-normal text-gray-600 text-lg transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-7 peer-focus:text-t-main peer-focus:text-lg peer-focus:m-0 peer-focus:font-semibold peer-read-only:-top-7 peer-read-only:text-t-main peer-read-only:font-semibold peer-read-only:text-lg peer-read-only:m-0 peer-valid:-top-7 peer-valid:text-t-main peer-valid:font-semibold peer-valid:text-lg peer-valid:m-0'
-  const styleInput = 'pl-4 rounded-xl peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-secondary-color'
+  const styleInput = 'pl-4 rounded-xl peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-500'
 
 
-  const [isLoading, setLoading] = useState()
+  const [loading, setLoading] = useState()
   const [nameProfessional, setNameProfessional] = useState('');
   const [namePatient, setNamePatient] = useState('');
   const [description, setDescription] = useState('');
@@ -110,8 +108,8 @@ function CreateConsult() {
 
   return (
     <>
-      <div className="flex h-screen justify-center items-center bg-zinc-400 bg-cover bg-no-repeat">
-        <div className='flex flex-col items-center bg-zinc-100 w-4/12 justify-center rounded-xl py-6 space-y-8 shadow-lg shadow-zinc-800 border-3'>
+      <div className="flex h-full justify-center items-center bg-zinc-400 bg-cover bg-no-repeat">
+        <div className='flex flex-col m-10 items-center bg-zinc-100 w-4/12 justify-center rounded-xl py-6 space-y-8 shadow-lg shadow-zinc-800 border-3'>
           <div className='relative top-5 left-14 flex items-start justify-start w-full' >
             <a href={'/consults'}>
               <ArrowBigLeft width={30} height={30} />
@@ -157,12 +155,7 @@ function CreateConsult() {
                   <input required {...register('date')} onChange={e => setDate(e.target.value)} value={date} id='date' className={styleInput} type='date' placeholder={false} onFocus={() => setOnFocus(true)} onBlur={() => setOnFocus(false)} />
                   <label htmlFor='date' className={styleLabel}>{onfocus ? 'Data' : ''}</label>
                 </div>
-                {
-                  errors.date &&
-                  <span className='flex pl-10 py-1 font-semibold text-red-600'>
-                    {errors.date.message}
-                  </span>
-                }
+                {errors.date &&<span className='flex pl-10 py-1 font-semibold text-red-600'>{errors.date.message}</span>}
               </div>
               <div className='flex flex-col w-full'>
                 <div className='flex relative w-full space-x-2 items-center justify-center'>
@@ -183,7 +176,7 @@ function CreateConsult() {
             </div>
             <div className='flex w-full flex-col justify-center items-center'>
               <button onSubmit={(e) => AddConsult(e)} className='bg-green-600 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-6/12 text-center items-center rounded-lg hover:border-black hover:bg-green-700' >
-                {isLoading ? <IfLoading /> : <span>Salvar</span>}
+                {loading ? <IfLoading /> : <span>Salvar</span>}
               </button>
             </div>
           </form>

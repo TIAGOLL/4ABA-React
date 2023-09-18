@@ -3,7 +3,7 @@ import React from 'react';
 export default function ConsultsCard({ id, local, date, createdAt, namePatient, nameProfessional, description }) {
     return (
         <>
-            <a href={`/consults/${id}`} className='flex flex-col gap-4 border-2 w-3/12 p-6 m-2 bg-white rounded-xl shadow-lg items-start justify-start'>
+            <a href={`/consults/${id}`} className='flex flex-col gap-4 border-2 w-5/12 p-6 m-2 bg-white rounded-xl shadow-lg items-start justify-start'>
                 <div>
                     <div>
                         <span className='font-semibold text-lg'>Data da consulta:</span> {date}

@@ -6,7 +6,7 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <div className='h-screen bg-zinc-300 w-screen'>
+        <div className='h-full bg-zinc-300 w-full'>
           <RoutesApp />
         </div>
       </AuthProvider>

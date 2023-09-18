@@ -4,9 +4,11 @@ import { useForm } from 'react-hook-form'
 import { ArrowBigLeft } from 'lucide-react'
 import React, { useEffect } from 'react'
 import { useState } from 'react'
-import { addDoc, collection } from 'firebase/firestore'
-import { db } from '../../services/connectionDB'
-import IfLoading from '../../components/IfLoaging'
+import { addDoc, collection, deleteDoc, onSnapshot, updateDoc } from 'firebase/firestore'
+import { db } from '../../../services/connectionDB'
+import IfLoading from '../../../components/IfLoaging'
+import { useParams } from 'react-router-dom'
+
 const createUserSchema = z.object({
   namePatient: z.string()
     .nonempty('Preencha este campo')
@@ -50,13 +52,17 @@ const createUserSchema = z.object({
 })
 
 
-const CreatePatient = () => {
+const PatientsById = () => {
 
   // estilos do campos para o código ficar mais clean
   const styleLabel = 'cursor-text absolute left-2 top-1 bottom-0 font-normal text-gray-600 text-lg transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-7 peer-focus:text-t-main peer-focus:text-lg peer-focus:m-0 peer-focus:font-semibold peer-valid:-top-7 peer-valid:text-t-main peer-valid:font-semibold peer-valid:text-lg peer-valid:m-0 peer-read-only:-top-7 peer-read-only:text-t-main peer-read-only:font-semibold peer-read-only:text-lg peer-read-only:m-0'
   const styleInput = 'pl-4 rounded-xl peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-500'
 
+
+  const { id } = useParams();
+
   //hooks para os inputs do paciente
+  const [idPatient, setIdPatient] = useState('')
   const [name, setName] = useState('')
   const [dateOfBirth, setDateOfBirth] = useState('')
   const [cpf, setCpf] = useState('')
@@ -80,43 +86,51 @@ const CreatePatient = () => {
     mode: 'all',
   })
 
-  function addPatient(e) {
+  async function loadPatient() {
+    onSnapshot(collection(db, "patients"), (querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        if (doc.id === id) {
+          setIdPatient(doc.id)
+          setName(doc.data().name)
+          setDateOfBirth(doc.data().dateOfBirth)
+          setCpf(doc.data().cpf)
+          setAdress(doc.data().adress)
+          setrName(doc.data().rName)
+          setrCpf(doc.data().rCpf)
+          setrPhone(doc.data().rPhone)
+          setrDateOfBirth(doc.data().rDateOfBirth)
+        }
+      });
+    })
+  }
+
+  useEffect(() => {
+    loadPatient();
+    setLoading(false);
+  }, []);
+
+
+  async function updatePatient(idPatient, e) {
     e.preventDefault()
     setLoading(true)
-    addDoc(collection(db, 'patients'), {
+    const patient = {
       name: name,
-      cpf: cpf,
       dateOfBirth: dateOfBirth,
+      cpf: cpf,
       adress: adress,
       rName: rName,
-      rCpf: rCpf,
       rDateOfBirth: rDateOfBirth,
+      rCpf: rCpf,
       rPhone: rPhone,
-    })
-      .then(() => {
-        setOutput(<span className='font-semibold text-green-600'>Paciente cadastrado com sucesso!</span>)
-        setTimeout(() => {
-          setOutput(undefined)
-        }, 3000);
-      })
-      .catch((error) => {
-        console.log(error)
-        setOutput(<span className='font-semibold text-red-500'>Um erro aconteceu, tente novamente mais tarde!</span>)
-        setTimeout(() => {
-          setOutput(undefined)
-        }, 3000);
-      })
-      .finally(() => {
-        setName('')
-        setDateOfBirth('')
-        setCpf('')
-        setAdress('')
-        setrName('')
-        setrDateOfBirth('')
-        setrCpf('')
-        setrPhone('')
-        setLoading(false)
-      })
+    }
+    await updateDoc(collection(db, "patients", idPatient), patient)
+    setLoading(false)
+  }
+
+  async function deletePatient(idPatient, e) {
+    e.preventDefault()
+    setLoading(true)
+    await deleteDoc(collection(db, "patients", idPatient))
     setLoading(false)
   }
 
@@ -185,8 +199,13 @@ const CreatePatient = () => {
                 {
                   output && output
                 }
-                <div className='flex w-full pt-4 flex-col justify-center items-center'>
-                  <button onClick={(e) => addPatient(e)} className='bg-green-600 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-6/12 text-center items-center rounded-lg hover:border-black hover:bg-green-700'>{loading ? <IfLoading /> : 'Cadastrar'}</button>
+                <div className='flex w-full flex-row gap-4 justify-center items-center'>
+                  <button onSubmit={e => updatePatient(idPatient, e)} className='bg-green-600 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-4/12 text-center items-center rounded-lg hover:border-black hover:bg-green-700' >
+                    {loading ? <IfLoading /> : <span>Salvar</span>}
+                  </button>
+                  <button onSubmit={e => deletePatient(idPatient, e)} className='bg-red-500 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-4/12 text-center items-center rounded-lg hover:border-black hover:bg-red-700' >
+                    {loading ? <IfLoading /> : <span>Excluir</span>}
+                  </button>
                 </div>
               </div>
             </div>
@@ -198,4 +217,4 @@ const CreatePatient = () => {
 
 }
 
-export default CreatePatient;
+export default PatientsById;
