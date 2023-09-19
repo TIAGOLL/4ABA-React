@@ -8,7 +8,7 @@ import Private from './private';
 import Patients from './../pages/Patients/index';
 import CreatePatient from '../pages/Patients/CreatePatient';
 import Calendar from './../pages/Calendar/index';
-import Consults from '../pages/consults';
+import Consults from '../pages/Consults';
 import CreateConsult from '../pages/consults/CreateConsult';
 import PatientsById from '../pages/Patients/[PatientsById]';
 
