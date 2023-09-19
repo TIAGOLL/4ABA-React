@@ -137,12 +137,6 @@ function CreateConsult() {
           <form onSubmit={handleSubmit(AddConsult)} className="w-full gap-8 flex-col flex">
             <div className='flex w-full flex-col px-14 pt-10 justify-center text-center items-center gap-8'>
               <div className='flex flex-col w-full'>
-                {/* <div className='flex relative w-full space-x-2 items-center justify-center'>
-                  <User strokeWidth={2} width={30} height={30} />
-                  <input type='' required {...register('namePatient')} onChange={e => setNamePatient(e.target.value)} value={namePatient} id='namePatient' className={styleInput} />
-                  <label htmlFor='namePatient' className={styleLabel}>Nome do paciente</label>
-                </div>
-                {errors.namePatient && <span className='flex pl-10 py-1 font-semibold text-red-600'>{errors.namePatient.message}</span>} */}
                 <div className='flex relative w-full space-x-2 items-center justify-center'>
                   <User strokeWidth={2} width={30} height={30} />
                   <select {...register('namePatient')} onChange={e => setNamePatient(e.target.value)} className={styleInput} >
