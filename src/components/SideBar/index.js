@@ -1,8 +1,7 @@
-import { CalendarDays, HomeIcon, Power, Users, GanttChartSquareIcon } from "lucide-react";
-import React from "react";
-import ActiveLink from './../ActiveLink/index';
-import { useNavigate } from "react-router-dom";
+import { CalendarDays, GanttChartSquareIcon, HomeIcon, Power, Users } from "lucide-react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import ActiveLink from './../ActiveLink/index';
 
 const SideBar = () => {
   const navigate = useNavigate()

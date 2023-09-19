@@ -32,15 +32,15 @@ const Consults = () => {
 
   return (
     <>
-      <div className='flex flex-row h-full w-full'>
+      <div className='flex flex-row h-screen w-full'>
         <SideBar />
-        <div className='flex flex-col w-9/12 items-center justify-start pb-12 gap-4 mt-4 ml-12'>
-          <div className='flex w-full h-24 items-center justify-start'>
+        <div className='flex flex-col w-9/12 items-center justify-start gap-4 ml-12'>
+          <div className='flex w-full pt-4 items-center justify-start'>
             <a className='bg-green-500 flex w-40 flex-row border-2 rounded-lg p-4 m-1 justify-center font-semibold' href={'/consults/create'}>
               Criar consulta
             </a>
           </div>
-          <div className='flex items-center justify-start h-[calc(90vh-120px)] overflow-y-auto'>
+          <div className='flex items-center justify-start h-[83vh] overflow-y-auto'>
             <div className='flex flex-wrap h-full w-full gap-4'>
               {
                 loading ? <h1>Carregando...</h1> :

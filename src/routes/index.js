@@ -11,7 +11,7 @@ import Calendar from './../pages/Calendar/index';
 import Consults from '../pages/Consults';
 import CreateConsult from '../pages/Consults/CreateConsult';
 import PatientsById from '../pages/Patients/[PatientsById]';
-
+import React from 'react';
 //Rotas
 
 function RoutesApp() {

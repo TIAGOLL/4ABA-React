@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function ConsultsCard({ id, local, date, createdAt, namePatient, nameProfessional, description }) {
     return (
         <>

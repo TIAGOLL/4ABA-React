@@ -141,6 +141,7 @@ function CreateConsult() {
                 <div className='flex relative w-full space-x-2 items-center justify-center'>
                   <User strokeWidth={2} width={30} height={30} />
                   <select {...register('namePatient')} onChange={e => setNamePatient(e.target.value)} className={styleInput} >
+                    <option value=""></option>
                     {
                       patients.map((patient) => {
                         return (

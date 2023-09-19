@@ -2,12 +2,14 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { ArrowBigLeft } from 'lucide-react'
-import React from 'react'
 import { useState } from 'react'
 import { addDoc, collection } from 'firebase/firestore'
 import { db } from '../../services/connectionDB'
 import IfLoading from '../../components/IfLoading'
 import { useNavigate } from 'react-router-dom'
+
+
+
 const createUserSchema = z.object({
   namePatient: z.string()
     .nonempty('Preencha este campo')
