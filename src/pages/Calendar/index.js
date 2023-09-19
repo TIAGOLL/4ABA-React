@@ -10,6 +10,7 @@ const Calendar = () => {
 
   useEffect(() => {
     dispatch(ChangePage('calendar'))
+        // eslint-disable-next-line
   }, [])
   return (
     <>

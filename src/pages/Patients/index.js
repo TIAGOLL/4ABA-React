@@ -30,6 +30,7 @@ const Patients = () => {
     loadPatient()
     setLoading(false)
     dispatch(ChangePage('patients'))
+        // eslint-disable-next-line
   }, [])
 
   return (

@@ -27,6 +27,7 @@ const Consults = () => {
     setLoading(false)
 
     dispatch(ChangePage('consults'))
+        // eslint-disable-next-line
   }, []);
 
   return (

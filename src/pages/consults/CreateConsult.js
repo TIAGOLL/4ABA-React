@@ -51,6 +51,7 @@ function CreateConsult() {
 
   const [loading, setLoading] = useState()
   const [nameProfessional, setNameProfessional] = useState('');
+  // eslint-disable-next-line
   const [namePatient, setNamePatient] = useState('');
   const [description, setDescription] = useState('');
   const [output, setOutput] = useState('')
