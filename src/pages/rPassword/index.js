@@ -39,15 +39,15 @@ const Rpassword = () => {
   return (
     <>
       <div className="flex h-screen justify-center items-center bg-zinc-500">
-        <div className='flex flex-col items-center bg-background-color w-4/12 justify-center rounded-xl py-6 space-y-8 shadow-lg shadow-zinc-800 border-3'>
-          <div className='relative top-20 left-14 flex items-start justify-start w-full' >
+        <div className='flex flex-col items-center bg-zinc-100 w-4/12 justify-center rounded-xl py-6 space-y-8 shadow-lg shadow-zinc-800 border-3'>
+          <div className='relative top-20 left-10 flex items-start justify-start w-full' >
             <a href={'/'}>
               <ArrowBigLeft width={30} height={30} />
             </a>
           </div>
           <div className="flex w-full flex-col items-center text-center justify-center font-semibold mb-4">
-          <h1>Recupere sua senha</h1>
-              <h6>Enviaremos um código para seu e-mail cadastrado</h6>
+            <h1>Recupere sua senha</h1>
+            <h6>Enviaremos um código para seu e-mail cadastrado</h6>
           </div>
           <form onSubmit={handleSubmit(rpassword)} className="w-full gap-8 flex-col flex pt-4">
             <div className='flex w-full flex-col px-14 justify-center items-center gap-8'>
@@ -57,7 +57,7 @@ const Rpassword = () => {
                   <label htmlFor='email' className={styleLabel}>Email
                   </label>
                 </div>
-                {errors.email && <span>{errors.email.message}</span>}
+              {errors.email && <span className='flex pl-10 py-1 font-semibold text-red-600'>{errors.email.message}</span>}
               </div>
             </div>
             <div className='flex w-full flex-col justify-center items-center'>

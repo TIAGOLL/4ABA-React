@@ -4,9 +4,9 @@ import { useForm } from 'react-hook-form'
 import { ArrowBigLeft } from 'lucide-react'
 import React, { useEffect } from 'react'
 import { useState } from 'react'
-import { addDoc, collection, deleteDoc, doc, onSnapshot, updateDoc } from 'firebase/firestore'
+import { collection, deleteDoc, doc, onSnapshot, updateDoc } from 'firebase/firestore'
 import { db } from '../../../services/connectionDB'
-import IfLoading from '../../../components/IfLoaging'
+import IfLoading from '../../../components/IfLoading'
 import { useParams } from 'react-router-dom'
 
 const createUserSchema = z.object({
@@ -62,7 +62,6 @@ const PatientsById = () => {
   const { id } = useParams();
 
   //hooks para os inputs do paciente
-  const [idPatient, setIdPatient] = useState('')
   const [name, setName] = useState('')
   const [dateOfBirth, setDateOfBirth] = useState('')
   const [cpf, setCpf] = useState('')
@@ -90,7 +89,6 @@ const PatientsById = () => {
     onSnapshot(collection(db, "patients"), (querySnapshot) => {
       querySnapshot.forEach((doc) => {
         if (doc.id === id) {
-          setIdPatient(doc.id)
           setName(doc.data().name)
           setDateOfBirth(doc.data().dateOfBirth)
           setCpf(doc.data().cpf)
@@ -109,6 +107,7 @@ const PatientsById = () => {
     setTimeout(() => {
       setLoading(false);
     }, 1000);
+    // eslint-disable-next-line
   }, []);
 
 

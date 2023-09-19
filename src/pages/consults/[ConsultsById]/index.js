@@ -3,7 +3,7 @@ import { collection, deleteDoc, doc, onSnapshot, updateDoc } from 'firebase/fire
 import { db } from '../../../services/connectionDB';
 import { useParams } from 'react-router-dom';
 import { ArrowBigLeft } from 'lucide-react';
-import IfLoading from '../../../components/IfLoaging';
+import IfLoading from '../../../components/IfLoading';
 import { PenLine } from 'lucide-react';
 import { CalendarDays } from 'lucide-react';
 import { MapPin } from 'lucide-react';
@@ -93,6 +93,7 @@ const ConsultsById = () => {
   useEffect(() => {
     loadConsult();
     setLoading(false);
+    // eslint-disable-next-line
   }, []);
 
 

@@ -3,9 +3,12 @@ import SideBar from '../../components/SideBar';
 import { useEffect, useState } from 'react';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../services/connectionDB';
+import { useDispatch } from 'react-redux';
+import { ChangePage } from '../../redux/pageSlice';
 
 const Consults = () => {
 
+  const dispatch = useDispatch()
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -13,7 +16,7 @@ const Consults = () => {
     onSnapshot(collection(db, "consults"), (querySnapshot) => {
       const consults = [];
       querySnapshot.forEach((doc) => {
-        consults.push({ ...doc.data(), id: doc.id});
+        consults.push({ ...doc.data(), id: doc.id });
       });
       setData(consults)
     })
@@ -22,6 +25,8 @@ const Consults = () => {
   useEffect(() => {
     loadConsults();
     setLoading(false)
+
+    dispatch(ChangePage('consults'))
   }, []);
 
   return (
@@ -36,12 +41,12 @@ const Consults = () => {
           </div>
           <div className='flex items-center justify-start h-[calc(90vh-120px)] overflow-y-auto'>
             <div className='flex flex-wrap h-full w-full gap-4'>
-                {
-                  loading ? <h1>Carregando...</h1> :
+              {
+                loading ? <h1>Carregando...</h1> :
                   data.map(({ id, local, date, createdAt, namePatient, nameProfessional, description }) => (
                     <ConsultsCard key={id} id={id} date={date} namePatient={namePatient} nameProfessional={nameProfessional} description={description} local={local} />
-                    ))
-                }
+                  ))
+              }
             </div>
           </div>
         </div>

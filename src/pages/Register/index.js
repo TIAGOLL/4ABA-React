@@ -78,13 +78,16 @@ function Register() {
               <ArrowBigLeft width={30} height={30} />
             </a>
           </div>
+          <div className="flex w-full flex-col items-center text-center justify-center font-semibold mb-4">
+            <h1 className='m-0'>Registrar</h1>
+          </div>
           <form onSubmit={handleSubmit(SignUpUser)} className="w-full gap-8 flex-col flex">
             <div className='flex w-full flex-col px-14 pt-10 justify-center items-center gap-8'>
               <div className='flex flex-col w-full'>
                 <div className='flex relative w-full space-x-2 items-center justify-center'>
                   <User strokeWidth={2} width={30} height={30} />
                   <input required {...register('name')} onChange={e => setName(e.target.value)} value={name} id='name' className={styleInput} type='text' />
-                  <label htmlFor='name' className={styleLabel}>Name</label>
+                  <label htmlFor='name' className={styleLabel}>Nome</label>
                 </div>
                 {errors.name && <span className='flex pl-10 py-1 font-semibold text-red-600'>{errors.name.message}</span>}
               </div>

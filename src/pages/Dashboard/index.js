@@ -2,11 +2,12 @@
 import SideBar from '../../components/SideBar';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { ChangePage } from '../../redux/pageSlice';
+import { useDispatch } from 'react-redux';
 //Consumo de API
 
 const Dashboard = () => {
 
-  const [data, setData] = useState([])
   const [country, setCountry] = useState('')
   const [date, setDate] = useState('')
   const [content, setContent] = useState('')
@@ -28,10 +29,11 @@ const Dashboard = () => {
   }
 
 
-
+  const dispatch = useDispatch()
   useEffect(() => {
-    setLoading(false)
     loadTempApi()
+    setLoading(false)
+    dispatch(ChangePage('dashboard'))
   }, [])
 
   return (<>
@@ -41,15 +43,14 @@ const Dashboard = () => {
         <div className='flex flex-col items-center bg-zinc-100 w-8/12 p-10 mt-5 justify-center rounded-xl py-6 space-y-8 shadow-lg shadow-zinc-800 border-3'>
           <h1>Notícias</h1>
           <div>
-            {content}
+            {loading ? <h1>Carregando...</h1> : content}
           </div>
-
           <div className='flex flex-row w-full items-center justify-center text-center'>
             <div className='text-left w-6/12'>
-              <p>Data: {date}</p>
+              {loading ? <h1>Carregando...</h1> : <p>Data: {date}</p>}
             </div>
             <div className='text-right w-6/12'>
-              <p>Local: {country}</p>
+              {loading ? <h1>Carregando...</h1> : <p>Local: {country}</p>}
             </div>
           </div>
         </div>

@@ -10,10 +10,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
 //imports context de autenticação
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, collection, getDocs } from 'firebase/firestore'
 import { CalendarDays, MapPin } from 'lucide-react'
-import IfLoading from '../../components/IfLoaging'
+import IfLoading from '../../components/IfLoading'
 import { db } from '../../services/connectionDB'
+import { useEffect } from 'react';
 
 const LoginFormSchema = z.object({
   // criação do schema de validação, mapea os campos do formulário
@@ -56,6 +57,7 @@ function CreateConsult() {
   const [local, setLocal] = useState('')
   const [date, setDate] = useState('')
   const [onfocus, setOnFocus] = useState(false)
+  const [patients, setPatients] = useState([])
 
   //validação de formulário
   const { register, handleSubmit, formState: { errors } } = useForm({
@@ -73,7 +75,6 @@ function CreateConsult() {
   async function AddConsult(data, e) {
     e.preventDefault()
     setLoading(true)
-    console.log(data)
 
     addDoc(collection(db, "consults"), {
       namePatient: data.namePatient,
@@ -106,6 +107,21 @@ function CreateConsult() {
       })
   }
 
+  async function loadPatients() {
+    const data = await getDocs(collection(db, "patients"))
+    const listPatients = []
+    data.forEach((doc) => {
+      listPatients.push({
+        name: doc.data()
+      })
+    });
+    setPatients(listPatients)
+  }
+
+  useEffect(() => {
+    loadPatients()
+  }, [])
+
   return (
     <>
       <div className="flex h-full justify-center items-center bg-zinc-400 bg-cover bg-no-repeat">
@@ -121,10 +137,23 @@ function CreateConsult() {
           <form onSubmit={handleSubmit(AddConsult)} className="w-full gap-8 flex-col flex">
             <div className='flex w-full flex-col px-14 pt-10 justify-center text-center items-center gap-8'>
               <div className='flex flex-col w-full'>
+                {/* <div className='flex relative w-full space-x-2 items-center justify-center'>
+                  <User strokeWidth={2} width={30} height={30} />
+                  <input type='' required {...register('namePatient')} onChange={e => setNamePatient(e.target.value)} value={namePatient} id='namePatient' className={styleInput} />
+                  <label htmlFor='namePatient' className={styleLabel}>Nome do paciente</label>
+                </div>
+                {errors.namePatient && <span className='flex pl-10 py-1 font-semibold text-red-600'>{errors.namePatient.message}</span>} */}
                 <div className='flex relative w-full space-x-2 items-center justify-center'>
                   <User strokeWidth={2} width={30} height={30} />
-                  <input required {...register('namePatient')} onChange={e => setNamePatient(e.target.value)} value={namePatient} id='namePatient' className={styleInput} type='text' />
-                  <label htmlFor='namePatient' className={styleLabel}>Nome do paciente</label>
+                  <select {...register('namePatient')} onChange={e => setNamePatient(e.target.value)} className={styleInput} >
+                    {
+                      patients.map((patient) => {
+                        return (
+                          <option key={patient} value={patient.name.name}>{patient.name.name}</option>
+                        )
+                      })
+                    }
+                  </select>
                 </div>
                 {errors.namePatient && <span className='flex pl-10 py-1 font-semibold text-red-600'>{errors.namePatient.message}</span>}
               </div>

@@ -14,6 +14,8 @@ import { z } from 'zod'
 //imports context
 import { AuthContext } from '../../contexts/auth'
 
+import IfLoading from '../../components/IfLoading'
+
 const LoginFormSchema = z.object({
   // criação do schema de validação, mapea os campos do formulário
   email: z.string()
@@ -34,7 +36,7 @@ function SignIn() {
 
 
   //hooks
-  const [isLoading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -58,7 +60,6 @@ function SignIn() {
     setLoading(true)
     e.preventDefault()
     signIn(data.email, data.password)
-    setLoading(false)
   }
 
   return (
@@ -87,7 +88,7 @@ function SignIn() {
             </div>
             <div className='flex w-full flex-col justify-center items-center'>
               <button type='submit' className='bg-green-600 flex justify-center font-semibold py-1 border border-zinc-500 text-lg w-6/12 text-center items-center rounded-lg hover:border-black hover:bg-green-700' >
-                {isLoading ? 'Carregando...' : 'Entrar'}
+                {loading ? <IfLoading /> : 'Entrar'}
               </button>
             </div>
             <div className="flex w-full flex-row px-4">

@@ -3,11 +3,18 @@ import SideBar from '../../components/SideBar';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../services/connectionDB';
 import PatientCard from '../../components/PatientCard';
+import { useDispatch } from 'react-redux';
+import { ChangePage } from '../../redux/pageSlice';
 
 const Patients = () => {
 
+
+  const dispatch = useDispatch()
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+
+
 
   async function loadPatient() {
     onSnapshot(collection(db, "patients"), (querySnapshot) => {
@@ -18,9 +25,11 @@ const Patients = () => {
       setData(patients)
     })
   }
+
   useEffect(() => {
     loadPatient()
     setLoading(false)
+    dispatch(ChangePage('patients'))
   }, [])
 
   return (
